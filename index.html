@@ -3,76 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI応答サービス</title>
+    <title>AIチャットボット</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        #userInput {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #response {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+
+.chat-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.chat-box {
+    height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.message {
+    margin: 5px 0;
+}
+
+.user {
+    text-align: right;
+    color: blue;
+}
+
+.bot {
+    text-align: left;
+    color: green;
+}
+
+#user-input {
+    width: 80%;
+    padding: 5px;
+}
+
+button {
+    padding: 5px 10px;
+}
+
     </style>
 </head>
 <body>
-    <h1>AI応答サービス</h1>
-    <input type="text" id="userInput" placeholder="質問を入力してください">
-    <button onclick="getResponse()">送信</button>
-    <div id="response"></div>
-
+    <div class="chat-container">
+        <div id="chat-box" class="chat-box"></div>
+        <input type="text" id="user-input" placeholder="メッセージを入力..." />
+        <button onclick="sendMessage()">送信</button>
+    </div>
     <script>
-        async function getResponse() {
-            const userInput = document.getElementById('userInput').value;
-            const responseDiv = document.getElementById('response');
-            const apiKey = 'YOUR_API_KEY'; // ここにAPIキーを入力
+        const apiKey = "SlmFe0uipsdbt7meCyFaODEgH7STjsSkHWPfVCio"; // ここにCohereのAPIキーを入力
 
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    model: 'gpt-3.5-turbo-0125',
-                    messages: [{ role: 'user', content: userInput }],
-                }),
-            });
+async function sendMessage() {
+    const userInput = document.getElementById("user-input").value.trim();
+    if (userInput) {
+        displayMessage(userInput, "user");
+        document.getElementById("user-input").value = "";
 
-            const data = await response.json();
-            responseDiv.innerHTML = data.choices[0].message.content;
-        }
+        // AIのレスポンスを取得
+        const botResponse = await fetchCohereResponse(userInput);
+        displayMessage(botResponse, "bot");
+    }
+}
+
+function displayMessage(message, sender) {
+    const chatBox = document.getElementById("chat-box");
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message", sender);
+    messageElement.innerText = message;
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight; // チャットボックスを一番下にスクロール
+}
+
+async function fetchCohereResponse(userInput) {
+    try {
+        const response = await fetch("https://api.cohere.ai/v1/generate", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${apiKey}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: "small", // モデルのサイズ（無料プランで利用可能なモデルを選択）
+                prompt: `ユーザー: ${userInput}\nボット:`,
+                max_tokens: 50, // 最大トークン数
+                temperature: 0.7 // 応答のランダム性
+            })
+        });
+
+        const data = await response.json();
+        return data.generations[0].text.trim();
+    } catch (error) {
+        console.error("エラーが発生しました:", error);
+        return "申し訳ありませんが、現在お手伝いできません。";
+    }
+}
+
     </script>
 </body>
 </html>
