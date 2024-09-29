@@ -99,18 +99,27 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+/* 残り使用回数のスタイル */
+#usage-info {
+    text-align: center;
+    font-size: 1em;
+    margin-bottom: 10px;
+    color: #343a40;
+}
 
     </style>
 </head>
 <body>
     <div class="chat-container">
-        <h1 class="chat-title">Cohere チャットボット</h1>
-        <div class="chat-box" id="chat-box"></div>
-        <div class="input-area">
-            <input type="text" id="user-input" placeholder="メッセージを入力...">
-            <button id="send-btn">送信</button>
-        </div>
+    <h1 class="chat-title">Cohere チャットボット</h1>
+    <div id="usage-info">残り使用回数: <span id="remaining-count">1000</span></div> <!-- 残り使用回数の表示部分 -->
+    <div class="chat-box" id="chat-box"></div>
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="メッセージを入力...">
+        <button id="send-btn">送信</button>
     </div>
+</div>
+
     <script>
         const apiKey = "SlmFe0uipsdbt7meCyFaODEgH7STjsSkHWPfVCio"; // ここにCohereのAPIキーを入力
 
@@ -158,6 +167,27 @@ async function fetchCohereResponse(userInput) {
         return "申し訳ありませんが、現在お手伝いできません。";
     }
 }
+let remainingCount = 1000; // 残り使用回数の初期値
+
+document.getElementById("send-btn").addEventListener("click", () => {
+    const userInput = document.getElementById("user-input").value;
+    
+    // チャットボックスにユーザーのメッセージを追加
+    const chatBox = document.getElementById("chat-box");
+    const userMessage = document.createElement("div");
+    userMessage.classList.add("message", "user");
+    userMessage.innerText = userInput;
+    chatBox.appendChild(userMessage);
+
+    // ここでCohere APIを呼び出すロジックを追加
+
+    // 使用回数を減らす
+    remainingCount--;
+    document.getElementById("remaining-count").innerText = remainingCount;
+
+    // 入力フィールドをクリア
+    document.getElementById("user-input").value = "";
+});
 
     </script>
 </body>
