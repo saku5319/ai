@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AIチャットボット</title>
     <style>/* 全体のスタイル設定 */
+/* 全体のスタイル設定 */
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     display: flex;
@@ -25,6 +26,14 @@ body {
     display: flex;
     flex-direction: column;
     height: 500px;
+}
+
+/* タイトルのスタイル */
+.chat-title {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #343a40;
 }
 
 /* チャットボックスのスタイル */
@@ -60,6 +69,12 @@ body {
     color: white;
 }
 
+/* 入力エリアのスタイル */
+.input-area {
+    display: flex;
+    margin-top: 10px;
+}
+
 /* 入力フィールドのスタイル */
 #user-input {
     width: calc(100% - 90px);
@@ -85,14 +100,16 @@ button:hover {
     background-color: #0056b3;
 }
 
-
     </style>
 </head>
 <body>
     <div class="chat-container">
-        <div id="chat-box" class="chat-box"></div>
-        <input type="text" id="user-input" placeholder="メッセージを入力..." />
-        <button onclick="sendMessage()">送信</button>
+        <h1 class="chat-title">Cohere チャットボット</h1>
+        <div class="chat-box" id="chat-box"></div>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="メッセージを入力...">
+            <button id="send-btn">送信</button>
+        </div>
     </div>
     <script>
         const apiKey = "SlmFe0uipsdbt7meCyFaODEgH7STjsSkHWPfVCio"; // ここにCohereのAPIキーを入力
