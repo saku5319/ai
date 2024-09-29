@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cohere Chatbot</title>
+    <title>さくさくAIボットくん</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -109,6 +109,28 @@
             sendMessage();
         }
     });
+    const response = await fetch('https://api.cohere.ai/v1/chat', {
+    method: 'POST',
+    headers: {
+        'Authorization': 'Bearer YOUR_COHERE_API_KEY',
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        prompt: userMessage,
+        maxTokens: 50,
+    }),
+});
+
+if (!response.ok) {
+    const errorData = await response.json();
+    console.error('Error:', errorData);
+    alert('Error: ' + errorData.message);
+    return;
+}
+
+const data = await response.json();
+const botMessage = data.generations[0].text;
+
 </script>
 
 </body>
