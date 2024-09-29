@@ -167,11 +167,15 @@ async function fetchCohereResponse(userInput) {
         return "申し訳ありませんが、現在お手伝いできません。";
     }
 }
-let remainingCount = 1000; // 残り使用回数の初期値
+let remainingCount = localStorage.getItem('remainingCount') ? parseInt(localStorage.getItem('remainingCount')) : 1000;
 
+// 初期表示の更新
+document.getElementById("remaining-count").innerText = remainingCount;
+
+// メッセージ送信時の処理
 document.getElementById("send-btn").addEventListener("click", () => {
     const userInput = document.getElementById("user-input").value;
-    
+
     // チャットボックスにユーザーのメッセージを追加
     const chatBox = document.getElementById("chat-box");
     const userMessage = document.createElement("div");
@@ -179,14 +183,40 @@ document.getElementById("send-btn").addEventListener("click", () => {
     userMessage.innerText = userInput;
     chatBox.appendChild(userMessage);
 
-    // ここでCohere APIを呼び出すロジックを追加
+    // Cohere APIを呼び出すロジックをここに追加
 
     // 使用回数を減らす
     remainingCount--;
+    localStorage.setItem('remainingCount', remainingCount); // ローカルストレージに保存
     document.getElementById("remaining-count").innerText = remainingCount;
 
     // 入力フィールドをクリア
     document.getElementById("user-input").value = "";
+
+});
+//エラー
+        fetch('https://api.cohere.ai/chat', {
+    method: 'POST',
+    headers: {
+        'Authorization': `Bearer YOUR_API_KEY`,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        // リクエスト内容
+    })
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+})
+.then(data => {
+    console.log(data); // APIの応答をコンソールに表示
+    // ここで応答をチャットボックスに表示するロジックを追加
+})
+.catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
 });
 
     </script>
