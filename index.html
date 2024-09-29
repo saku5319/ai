@@ -4,55 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AIチャットボット</title>
-    <style>
-        body {
-    font-family: Arial, sans-serif;
+    <style>/* 全体のスタイル設定 */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #e9ecef;
     margin: 0;
 }
 
+/* チャットコンテナのスタイル */
 .chat-container {
-    background-color: white;
+    background-color: #ffffff;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 400px;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
 }
 
+/* チャットボックスのスタイル */
 .chat-box {
-    height: 300px;
+    flex: 1;
     overflow-y: auto;
-    border: 1px solid #ddd;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
+    background-color: #f8f9fa;
 }
 
+/* メッセージのスタイル */
 .message {
     margin: 5px 0;
+    padding: 8px 10px;
+    border-radius: 5px;
+    max-width: 70%;
+    word-wrap: break-word;
 }
 
+/* ユーザーのメッセージのスタイル */
 .user {
-    text-align: right;
-    color: blue;
+    background-color: #007bff;
+    color: white;
+    margin-left: auto;
 }
 
+/* ボットのメッセージのスタイル */
 .bot {
-    text-align: left;
-    color: green;
+    background-color: #28a745;
+    color: white;
 }
 
+/* 入力フィールドのスタイル */
 #user-input {
-    width: 80%;
-    padding: 5px;
+    width: calc(100% - 90px);
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-right: 10px;
 }
 
+/* ボタンのスタイル */
 button {
-    padding: 5px 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
+
+/* ボタンホバー時のスタイル */
+button:hover {
+    background-color: #0056b3;
+}
+
 
     </style>
 </head>
